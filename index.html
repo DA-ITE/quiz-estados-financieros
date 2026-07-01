@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz interactivo - Estados Financieros Básicos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{--azul:#0075B0;--azul-suave:#D8ECF6;--azul-claro:#8EC3DF;--negro:#111111;--gris:#f4f4f4;--borde:#d8d8d8;--ok:#2e7d32;--error:#b00020}
+    *{box-sizing:border-box}
+    body{margin:0;padding:0;background:var(--gris);font-family:Arial,Helvetica,sans-serif;color:var(--negro)}
+    .wrap{max-width:920px;margin:0 auto;background:#fff;border:1px solid #e1e1e1;overflow:hidden}
+    .hero{background:var(--negro);padding:28px 30px 24px;border-bottom:14px solid var(--azul)}
+    .hero .eyebrow{margin:0 0 10px;font-size:13px;letter-spacing:4px;color:var(--azul-claro);font-weight:800;text-transform:uppercase}
+    .hero h1{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:44px;line-height:1.04;color:#fff;font-weight:700;letter-spacing:-1px}
+    .hero .sub{margin:14px 0 0;font-size:19px;line-height:1.35;color:#fff}
+    .intro{padding:24px 30px 8px}
+    .intro-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start}
+    .intro h2{margin:0 0 8px;font-size:22px;line-height:1.2;font-weight:800}
+    .intro p{margin:0;font-size:16px;line-height:1.55;color:#333}
+    .instruccion{background:var(--azul-suave);padding:16px;border-radius:12px;border-left:8px solid var(--azul)}
+    .instruccion .label{margin:0 0 6px;font-size:12px;letter-spacing:2px;font-weight:800;text-transform:uppercase;color:var(--negro)}
+    .progress-wrap{padding:12px 30px 0}
+    .progress-bg{background:#eee;height:12px;border-radius:20px;overflow:hidden}
+    .progress{width:12.5%;height:12px;background:var(--azul);border-right:2px solid var(--negro);transition:width .25s ease}
+    .contador{margin:8px 0 0;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:#555}
+    .quiz-area{padding:18px 30px 30px}
+    .card{border:1px solid var(--borde);border-radius:18px;overflow:hidden;background:#fff}
+    .card-inner{padding:22px;border-top:12px solid var(--azul)}
+    .question-head{display:grid;grid-template-columns:58px 1fr;gap:0}
+    .numero{width:46px;height:46px;border:2px solid var(--negro);border-radius:50%;text-align:center;line-height:46px;font-size:18px;font-weight:800}
+    .meta{margin:0 0 6px;color:#555;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:800}
+    .question-title{margin:0;font-size:25px;line-height:1.2;font-weight:800}
+    .icon{float:right;margin-left:8px}
+    .options{margin-top:18px}
+    .option{display:block;width:100%;text-align:left;margin:8px 0;padding:14px 16px;background:#fff;border:1px solid var(--borde);border-radius:12px;font-size:16px;line-height:1.35;cursor:pointer;transition:background .15s,border-color .15s}
+    .option:hover{background:#eef7fc;border-color:var(--azul)}
+    .option:disabled{cursor:default;opacity:.78}
+    .feedback{display:none;margin-top:16px;padding:14px;border-radius:10px;font-size:15px;line-height:1.45}
+    .feedback.ok{display:block;background:#eaf8ea;border-left:6px solid var(--ok)}
+    .feedback.warn{display:block;background:var(--azul-suave);border-left:6px solid var(--azul)}
+    .feedback.bad{display:block;background:#fdeaea;border-left:6px solid var(--error)}
+    .action{display:none;margin-top:14px;background:var(--negro);color:var(--azul-claro);border:none;padding:12px 20px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer}
+    .action.show{display:inline-block}
+    .result{background:var(--negro);border-radius:18px;padding:26px;color:#fff}
+    .result .eyebrow{margin:0 0 8px;color:var(--azul-claro);font-size:13px;letter-spacing:3px;text-transform:uppercase;font-weight:800}
+    .result h2{margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:34px;line-height:1.1;color:#fff;font-weight:700}
+    .result p{margin:0;font-size:17px;line-height:1.55;color:#f2f2f2}
+    .nextbox{margin-top:18px;padding:16px;background:var(--azul-suave);color:var(--negro);border-radius:14px;border-left:8px solid var(--azul)}
+    .result .nextbox p{color:var(--negro)}
+    .reset{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#fff;color:var(--negro);border:2px solid var(--azul);padding:12px 20px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer}
+    @media (max-width:760px){.intro-grid{grid-template-columns:1fr}.hero h1{font-size:36px}.question-title{font-size:22px}.quiz-area,.intro,.progress-wrap{padding-left:18px;padding-right:18px}.hero{padding-left:18px;padding-right:18px}}
+  </style>
+</head>
+<body>
+<div id="quizEstadosFinancieros" class="wrap">
+  <div class="hero">
+    <p class="eyebrow">Análisis e Interpretación de los EE.FF. / Sesión 01</p>
+    <h1>Quiz interactivo:<br>Estados Financieros Básicos</h1>
+    <p class="sub">Avanza pregunta a pregunta y refuerza los conceptos clave para leer la situación inicial de una empresa.</p>
+  </div>
+  <div class="intro"><div class="intro-grid">
+    <div><h2>Responde, recibe retroalimentación y desbloquea el siguiente reto.</h2><p>Selecciona una alternativa por pregunta. Si respondes correctamente, podrás avanzar. Si te equivocas, recibirás una pista y tendrás una oportunidad más.</p></div>
+    <div class="instruccion"><p class="label">Instrucción</p><p><strong>Elige</strong> la respuesta correcta para pasar al siguiente slide.</p></div>
+  </div></div>
+  <div class="progress-wrap"><div class="progress-bg"><div id="barraProgreso" class="progress"></div></div><p id="contadorQuiz" class="contador">Pregunta 1 de 8</p></div>
+  <div class="quiz-area"><div id="quizContent"></div></div>
+</div>
+<script>
+const preguntas=[{meta:"Estados financieros",icon:"documents",pregunta:"¿Cuál es la función principal de los estados financieros?",opciones:["Mostrar únicamente cuánto dinero hay en caja.","Resumir información económica y financiera para apoyar la toma de decisiones.","Reemplazar todos los registros contables de la empresa.","Indicar solamente cuánto debe pagar la empresa en impuestos."],correcta:1,ok:"Los estados financieros resumen información clave sobre recursos, obligaciones, resultados y efectivo para tomar mejores decisiones.",pista:"Piensa en los estados financieros como informes que ayudan a comprender la situación de una empresa, no como un dato aislado."},{meta:"Estado de Situación Financiera",icon:"balance",pregunta:"¿Qué pregunta responde principalmente el Estado de Situación Financiera?",opciones:["¿La empresa ganó o perdió dinero durante el periodo?","¿Qué tiene, qué debe y cómo se financia la empresa?","¿Qué productos vendió más durante el mes?","¿Cuántos clientes nuevos consiguió la empresa?"],correcta:1,ok:"El Estado de Situación Financiera muestra activos, pasivos y patrimonio en una fecha determinada.",pista:"Recuerda que este estado funciona como una fotografía de la posición financiera de la empresa."},{meta:"Ecuación contable",icon:"equation",pregunta:"¿Cuál es la ecuación contable fundamental?",opciones:["Activo = Pasivo + Patrimonio.","Utilidad = Activo − Pasivo.","Ingresos = Costos + Efectivo.","Patrimonio = Ventas − Gastos."],correcta:0,ok:"La ecuación Activo = Pasivo + Patrimonio muestra que todo recurso tiene una fuente de financiamiento.",pista:"Relaciona lo que la empresa posee con las fuentes que financian esos recursos."},{meta:"Estado de Resultados",icon:"trending",pregunta:"¿Qué información presenta principalmente el Estado de Resultados?",opciones:["Entradas y salidas reales de efectivo.","Activos, pasivos y patrimonio.","Ingresos, costos, gastos y utilidad o pérdida del periodo.","Solo las deudas bancarias de la empresa."],correcta:2,ok:"El Estado de Resultados permite saber si la empresa ganó o perdió dinero durante un periodo.",pista:"Piensa en el desempeño económico: ventas, costos, gastos y resultado final."},{meta:"Utilidad y efectivo",icon:"cash",pregunta:"¿Por qué vender más no siempre significa ganar más?",opciones:["Porque las ventas siempre disminuyen el patrimonio.","Porque los costos y gastos pueden crecer más rápido que los ingresos.","Porque todo ingreso se convierte automáticamente en efectivo disponible.","Porque el Estado de Resultados no considera ingresos."],correcta:1,ok:"Una empresa puede vender más, pero si sus costos y gastos crecen demasiado, la utilidad puede reducirse o convertirse en pérdida.",pista:"No basta mirar las ventas: también hay que revisar cuánto costó generar esas ventas."},{meta:"Estado de Flujo de Efectivo",icon:"arrows",pregunta:"¿Qué muestra principalmente el Estado de Flujo de Efectivo?",opciones:["La estructura de activos, pasivos y patrimonio.","Las entradas y salidas reales de dinero durante un periodo.","La utilidad contable sin considerar caja.","La lista de productos vendidos por la empresa."],correcta:1,ok:"El Estado de Flujo de Efectivo muestra de dónde vino y a dónde fue el dinero de la empresa.",pista:"Este estado se concentra en el movimiento real del efectivo, no solo en utilidades contables."},{meta:"Clasificación de flujos",icon:"flow",pregunta:"¿Cuál de estas opciones corresponde a una actividad de inversión en el Estado de Flujo de Efectivo?",opciones:["Cobro a clientes por ventas.","Pago de sueldos al personal.","Compra de maquinaria o equipo.","Pago mensual de servicios básicos."],correcta:2,ok:"La compra de maquinaria o equipo corresponde a inversión porque implica adquirir activos de largo plazo.",pista:"Las actividades de inversión se relacionan con compras o ventas de activos de largo plazo."},{meta:"Lectura conjunta",icon:"grid",pregunta:"¿Por qué es importante analizar los tres estados financieros en conjunto?",opciones:["Porque todos muestran exactamente la misma información.","Porque cada uno responde una pregunta distinta sobre la empresa.","Porque el Estado de Resultados reemplaza al Flujo de Efectivo.","Porque solo así se evita elaborar registros contables."],correcta:1,ok:"Cada estado financiero ofrece una perspectiva diferente: posición financiera, desempeño económico y movimiento de efectivo.",pista:"Recuerda que un solo estado financiero no muestra toda la realidad de la empresa."}];
+let actual=0,puntaje=0,intentos=0,respondida=false;
+function iconSVG(type){const base='width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="icon"';const icons={documents:`<svg ${base}><path d="M7 3h7l4 4v14H7z"></path><path d="M14 3v5h5"></path><path d="M9 12h6M9 16h6M9 8h2"></path></svg>`,balance:`<svg ${base}><path d="M12 3v18"></path><path d="M5 7h14"></path><path d="M7 7l-3 6h6z"></path><path d="M17 7l-3 6h6z"></path><path d="M8 21h8"></path></svg>`,equation:`<svg ${base}><path d="M4 8h16"></path><path d="M4 16h16"></path><path d="M8 4v16"></path><path d="M16 4v16"></path></svg>`,trending:`<svg ${base}><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M7 15l4-4 3 3 5-7"></path><path d="M17 7h2v2"></path></svg>`,cash:`<svg ${base}><rect x="3" y="6" width="18" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle><path d="M6 9v.01M18 15v.01"></path></svg>`,arrows:`<svg ${base}><path d="M12 3v18"></path><path d="M7 8l5-5 5 5"></path><path d="M17 16l-5 5-5-5"></path><path d="M4 12h16"></path></svg>`,flow:`<svg ${base}><path d="M4 6h6v6H4z"></path><path d="M14 12h6v6h-6z"></path><path d="M10 9h2a2 2 0 0 1 2 2v1"></path><path d="M14 15h-2a2 2 0 0 1-2-2v-1"></path></svg>`,grid:`<svg ${base}><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path><path d="M8 4v16"></path><path d="M16 4v16"></path></svg>`};return icons[type]||icons.documents;}
+function renderPregunta(){respondida=false;intentos=0;const p=preguntas[actual];const num=String(actual+1).padStart(2,"0");document.getElementById("barraProgreso").style.width=((actual+1)/preguntas.length*100)+"%";document.getElementById("contadorQuiz").textContent=`Pregunta ${actual+1} de ${preguntas.length}`;const opciones=p.opciones.map((op,i)=>`<button class="option" type="button" onclick="responder(${i})">${String.fromCharCode(65+i)}. ${op}</button>`).join("");document.getElementById("quizContent").innerHTML=`<div class="card"><div class="card-inner"><div class="question-head"><div><div class="numero">${num}</div></div><div>${iconSVG(p.icon)}<p class="meta">${p.meta}</p><h3 class="question-title">${p.pregunta}</h3></div></div><div class="options">${opciones}</div><div id="feedback" class="feedback"></div><button id="btnNext" class="action" type="button" onclick="siguiente()">${actual===preguntas.length-1?"Ver resultado":"Siguiente pregunta"}</button></div></div>`;}
+function responder(indice){if(respondida)return;const p=preguntas[actual],feedback=document.getElementById("feedback");intentos++;if(indice===p.correcta){respondida=true;puntaje++;feedback.className="feedback ok";feedback.innerHTML=`<strong>Respuesta correcta:</strong> ${p.ok}`;bloquearOpciones();document.getElementById("btnNext").classList.add("show");}else{if(intentos<2){feedback.className="feedback warn";feedback.innerHTML=`<strong>Inténtalo nuevamente:</strong> ${p.pista}`;}else{respondida=true;feedback.className="feedback bad";feedback.innerHTML=`<strong>Retroalimentación:</strong> ${p.ok}`;bloquearOpciones();document.getElementById("btnNext").classList.add("show");}}}
+function bloquearOpciones(){document.querySelectorAll(".option").forEach(btn=>{btn.disabled=true;btn.style.cursor="default";btn.style.opacity=".75";});}
+function siguiente(){if(actual<preguntas.length-1){actual++;renderPregunta();mantenerVista();}else{renderResultado();mantenerVista();}}
+function renderResultado(){document.getElementById("barraProgreso").style.width="100%";document.getElementById("contadorQuiz").textContent="Quiz completado";document.getElementById("quizContent").innerHTML=`<div class="result"><p class="eyebrow">Resultado</p><h2>¡Quiz completado!</h2><p>Has completado el quiz. Puntaje obtenido: <strong>${puntaje} de ${preguntas.length}</strong>. Usa esta retroalimentación para fortalecer tu lectura inicial de los estados financieros.</p><div class="nextbox"><p style="margin:0;font-size:16px;line-height:1.5;"><strong>Siguiente paso:</strong> Usa estos conceptos para elaborar tu glosario financiero y clasificar cuentas o flujos con mayor criterio.</p></div><button class="reset" type="button" onclick="reiniciarQuiz()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111111" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"></path><path d="M3 4v6h6"></path></svg>Reiniciar cuestionario</button></div>`;}
+function reiniciarQuiz(){actual=0;puntaje=0;intentos=0;respondida=false;renderPregunta();mantenerVista();}
+function mantenerVista(){const area=document.getElementById("contadorQuiz");if(area){area.scrollIntoView({behavior:"smooth",block:"start"});}}
+renderPregunta();
+</script>
+</body>
+</html>
